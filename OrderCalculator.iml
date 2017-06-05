@@ -18,5 +18,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="com.mashape.unirest:unirest-java:1.4.9" level="project" />
+    <orderEntry type="library" name="org.mockito:mockito-all:1.7" level="project" />
   </component>
 </module>

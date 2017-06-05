@@ -1,3 +1,7 @@
+package com.orderCalculator.processing;
+
+import com.orderCalculator.exceptions.NoItemsPassedInException;
+import com.orderCalculator.models.OrderItem;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,8 +22,8 @@ public class SalesTaxCalculatorTest {
     @Test
     public void shouldCalculateTenPercentTaxForNormalItems() {
 
-        List<Item> itemList = new ArrayList<>();
-        itemList.add(new Item(Item.ItemType.NORMAL, 12.00));
+        List<OrderItem> itemList = new ArrayList<>();
+        itemList.add(new OrderItem(OrderItem.ItemType.NORMAL, 12.00));
         double tax = salesTaxCalculator.calculateTax(itemList);
 
         assertEquals(tax, 1.2, 0.0001);
@@ -28,25 +32,25 @@ public class SalesTaxCalculatorTest {
     @Test
     public void shouldCalculateTenPercentTaxForListNormalItems() {
 
-        List<Item> itemList = new ArrayList<>();
-        itemList.add(new Item(Item.ItemType.NORMAL, 12.00));
-        itemList.add(new Item(Item.ItemType.NORMAL, 14.00));
+        List<OrderItem> itemList = new ArrayList<>();
+        itemList.add(new OrderItem(OrderItem.ItemType.NORMAL, 12.00));
+        itemList.add(new OrderItem(OrderItem.ItemType.NORMAL, 14.00));
         double tax = salesTaxCalculator.calculateTax(itemList);
         assertEquals(tax, 2.6, 0.0001);
     }
 
     @Test
     public void shouldCalculateFivePercentTaxForBooks() {
-        List<Item> itemList = new ArrayList<>();
-        itemList.add(new Item(Item.ItemType.BOOK, 20.0));
+        List<OrderItem> itemList = new ArrayList<>();
+        itemList.add(new OrderItem(OrderItem.ItemType.BOOK, 20.0));
         double tax = salesTaxCalculator.calculateTax(itemList);
         assertEquals(tax, 1, 0.0001);
     }
 
     @Test
     public void shouldCalculateTaxOfZeroForFood() {
-        List<Item> itemList = new ArrayList<>();
-        itemList.add(new Item(Item.ItemType.FOOD, 100.0));
+        List<OrderItem> itemList = new ArrayList<>();
+        itemList.add(new OrderItem(OrderItem.ItemType.FOOD, 100.0));
 
         double tax = salesTaxCalculator.calculateTax(itemList);
 
@@ -55,13 +59,20 @@ public class SalesTaxCalculatorTest {
 
     @Test
     public void shouldCalculateTaxForMixedItems() {
-        List<Item> itemList = new ArrayList<>();
-        itemList.add(new Item(Item.ItemType.NORMAL, 100.0));
-        itemList.add(new Item(Item.ItemType.BOOK, 100.0));
-        itemList.add(new Item(Item.ItemType.FOOD, 100.0));
+        List<OrderItem> itemList = new ArrayList<>();
+        itemList.add(new OrderItem(OrderItem.ItemType.NORMAL, 100.0));
+        itemList.add(new OrderItem(OrderItem.ItemType.BOOK, 100.0));
+        itemList.add(new OrderItem(OrderItem.ItemType.FOOD, 100.0));
 
         double tax = salesTaxCalculator.calculateTax(itemList);
 
         assertEquals(15, tax, 0.0001);
+    }
+
+    @Test(expected = NoItemsPassedInException.class)
+    public void shouldThrowExceptionWhenNoItemsPassed() {
+        List<OrderItem> itemList = new ArrayList<>();
+
+        salesTaxCalculator.calculateTax(itemList);
     }
 }
